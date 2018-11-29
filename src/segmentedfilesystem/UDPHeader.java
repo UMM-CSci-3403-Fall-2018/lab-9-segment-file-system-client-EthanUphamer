@@ -16,4 +16,8 @@ public class UDPHeader {
             this.filename.add(s[i]);
         }
     }
+
+    public byte getFileID() {
+      return this.FileID;
+    }
 }

@@ -19,4 +19,8 @@ public class UDPPacket {
             this.data.add(s[i]);
         }
     }
+
+    public byte getFileID(){
+      return this.FileID;
+    }
 }
