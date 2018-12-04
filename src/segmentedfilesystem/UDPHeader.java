@@ -4,23 +4,22 @@ import java.net.DatagramPacket;
 import java.util.ArrayList;
 
 public class UDPHeader {
-    private boolean status;
     private byte FileID;
-    private ArrayList<Byte> filename;
+    private String filename;
 
     public UDPHeader(DatagramPacket p){
-        byte[] s = p.getData();
-        this.status = false;
+        byte[] s = p.getData().clone();
+        int plength = p.getLength();
         this.FileID = s[1];
-        for(int i = 2; i < p.getLength(); i++){
-            this.filename.add(s[i]);
+        byte[] b = new byte[plength-2];
+        for(int i = 2; i < plength; i++){
+            b[i-2] = s[i];
         }
+        this.filename = new String(b);
+        System.out.println(filename);
     }
 
     public byte getFileID() {
       return this.FileID;
-    }
-    public void updateStatus() {
-        this.status = true;
     }
 }
