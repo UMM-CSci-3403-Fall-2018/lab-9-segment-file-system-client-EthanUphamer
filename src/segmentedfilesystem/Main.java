@@ -17,10 +17,10 @@ public class Main {
         SocketAddress s = new InetSocketAddress(heartofgold, PORT_NUMBER);
         DatagramSocket socket = new DatagramSocket();
         socket.connect(s);
-        byte[] buf = new byte[10];
-        DatagramPacket p = new DatagramPacket(buf, 10);
+        byte[] buf = new byte[1028];
+        DatagramPacket p = new DatagramPacket(buf, 1028);
         socket.send(p);
-        while(true) {
+        while(completionStatus(files)) {
           socket.receive(p);
           if(isHeader(p)) {
             addHeaderToFile(p);
@@ -28,6 +28,9 @@ public class Main {
             addPacketToFile(p);
           }
         }
+
+
+
         /*
         System.out.println(p.getData()[0]);
         System.out.println(p.getData()[1]);
@@ -70,5 +73,19 @@ public class Main {
         return false;
       }
     }
+
+    private boolean completionStatus(UDPFile[] arr){
+        boolean b = true;
+        for(int i = 0; i < 3; i++){
+         if(arr[i] != null && arr[i].sendStatus()){
+             b = false;
+         }
+        }
+        return b;
+    }
+
+    //private boolean checkLength(UDPFile[] arr){
+        //if(UDPFile)
+    //}
 
 }
