@@ -15,7 +15,7 @@ public class UDPFile {
       this.FileID = this.header.getFileID();
     }
 
-    public UDPFile(UPDPacket){
+    public UDPFile(UDPPacket p){
 
     }
 

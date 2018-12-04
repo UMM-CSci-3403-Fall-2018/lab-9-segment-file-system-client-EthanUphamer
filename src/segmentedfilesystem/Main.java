@@ -5,7 +5,7 @@ import java.net.*;
 
 public class Main {
     public static final int PORT_NUMBER = 6014;
-    UPDFile[] files = new UDPFile[3];
+    UDPFile[] files = new UDPFile[3];
 
     public static void main(String[] args) throws IOException {
         Main client = new Main();
@@ -43,7 +43,7 @@ public class Main {
         if(file == null) {
           file = new UDPFile(header);
           break;
-        } else if(file.getFileID().equals(header.getFileID())) {
+        } else if(file.getFileID() == header.getFileID()) {
           file.addHeaderToFile(header);
           break;
         }
@@ -51,12 +51,12 @@ public class Main {
     }
 
     private void addPacketToFile(DatagramPacket p) {
-      UPDPacket packet = new UDPPacket(p);
+      UDPPacket packet = new UDPPacket(p);
       for(UDPFile file : files) {
         if(file == null) {
           file = new UDPFile(packet);
           break;
-        } else if(file.getFileID().equals(packet.getFileID())) {
+        } else if(file.getFileID() == packet.getFileID()) {
           file.addPacketToFile(packet);
           break;
         }
