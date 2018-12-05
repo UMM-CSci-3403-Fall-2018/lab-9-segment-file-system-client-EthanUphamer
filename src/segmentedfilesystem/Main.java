@@ -21,14 +21,18 @@ public class Main {
         byte[] buf = new byte[1028];
         DatagramPacket p = new DatagramPacket(buf, 1028);
         socket.send(p);
-        while(completionStatus(files)) {
+        int packetCount = 0;
+        while(completionStatus(this.files)) {
           socket.receive(p);
+          packetCount++;
+          System.out.println("Packets recieved: " + packetCount);
           if(isHeader(p)) {
             addHeaderToFile(p);
           } else {
             addPacketToFile(p);
           }
         }
+        System.out.println("We actually left the while loop");
 
     }
 
@@ -36,7 +40,6 @@ public class Main {
       UDPHeader header = new UDPHeader(p);
       for(int i = 0; i < files.length; i++) {
         if(files[i] == null) {
-          System.out.println("Adding a new file");
           files[i] = new UDPFile(header);
           break;
         } else if(files[i].getFileID() == header.getFileID()) {
@@ -50,7 +53,6 @@ public class Main {
       UDPPacket packet = new UDPPacket(p);
       for(int i = 0; i < files.length; i++) {
         if(files[i] == null) {
-          System.out.println("Adding a new file");
           files[i] = new UDPFile(packet);
           break;
         } else if(files[i].getFileID() == packet.getFileID()) {
