@@ -16,7 +16,7 @@ public class UDPHeader {
             b[i-2] = s[i];
         }
         this.filename = new String(b);
-        System.out.println(filename);
+        //System.out.println(filename);
     }
 
     public byte getFileID() {

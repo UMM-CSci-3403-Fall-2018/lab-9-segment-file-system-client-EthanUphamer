@@ -3,6 +3,7 @@ package segmentedfilesystem;
 import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.nio.*;
 
 public class UDPPacket implements Comparable<UDPPacket> {
     private byte status;
@@ -14,8 +15,11 @@ public class UDPPacket implements Comparable<UDPPacket> {
         byte[] s = p.getData();
         this.status = s[0];
         this.FileID = s[1];
-        this.packetNumber = (s[2] << 8) | s[3] & 0xFF;
-        System.out.println(this.packetNumber);
+        //this.packetNumber = (s[2] << 8) | s[3] & 0xFF;
+        byte[] temp = {s[2], s[3]};
+        ByteBuffer wrapped = ByteBuffer.wrap(temp);
+        this.packetNumber = (int) wrapped.getShort();
+        //System.out.println(this.packetNumber);
         for(int i = 4; i < p.getLength(); i++){
             this.data.add(s[i]);
         }

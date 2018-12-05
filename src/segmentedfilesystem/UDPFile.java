@@ -50,4 +50,14 @@ public class UDPFile {
         }
         return false;
     }
+
+    public boolean exists() {
+      if(packets.size() >= 0) {
+        return true;
+      }
+      if(header != null) {
+        return true;
+      }
+      return false;
+    }
 }
