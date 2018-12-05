@@ -17,6 +17,7 @@ public class Main {
         SocketAddress s = new InetSocketAddress(heartofgold, PORT_NUMBER);
         DatagramSocket socket = new DatagramSocket();
         socket.connect(s);
+        UDPFile[] files = new UDPFile[3];
         byte[] buf = new byte[1028];
         DatagramPacket p = new DatagramPacket(buf, 1028);
         socket.send(p);
@@ -29,25 +30,17 @@ public class Main {
           }
         }
 
-
-
-        /*
-        System.out.println(p.getData()[0]);
-        System.out.println(p.getData()[1]);
-        System.out.println(p.getData()[2]);
-        System.out.println(p.getData()[3]);
-        System.out.println(p.getData()[4]);
-        */
     }
 
     private void addHeaderToFile(DatagramPacket p) {
       UDPHeader header = new UDPHeader(p);
-      for(UDPFile file : files) {
-        if(file == null) {
-          file = new UDPFile(header);
+      for(int i = 0; i < files.length; i++) {
+        if(files[i] == null) {
+          System.out.println("Adding a new file");
+          files[i] = new UDPFile(header);
           break;
-        } else if(file.getFileID() == header.getFileID()) {
-          file.addHeaderToFile(header);
+        } else if(files[i].getFileID() == header.getFileID()) {
+          files[i].addHeaderToFile(header);
           break;
         }
       }
@@ -55,12 +48,13 @@ public class Main {
 
     private void addPacketToFile(DatagramPacket p) {
       UDPPacket packet = new UDPPacket(p);
-      for(UDPFile file : files) {
-        if(file == null) {
-          file = new UDPFile(packet);
+      for(int i = 0; i < files.length; i++) {
+        if(files[i] == null) {
+          System.out.println("Adding a new file");
+          files[i] = new UDPFile(packet);
           break;
-        } else if(file.getFileID() == packet.getFileID()) {
-          file.addPacketToFile(packet);
+        } else if(files[i].getFileID() == packet.getFileID()) {
+          files[i].addPacketToFile(packet);
           break;
         }
       }
