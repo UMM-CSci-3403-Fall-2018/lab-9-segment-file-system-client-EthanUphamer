@@ -12,16 +12,14 @@ public class UDPPacket implements Comparable<UDPPacket> {
     private ArrayList<Byte> data = new ArrayList<Byte>();
 
     public UDPPacket(DatagramPacket p){
-        byte[] s = p.getData();
-        this.status = s[0];
-        this.FileID = s[1];
-        //this.packetNumber = (s[2] << 8) | s[3] & 0xFF;
-        byte[] temp = {s[2], s[3]};
-        ByteBuffer wrapped = ByteBuffer.wrap(temp);
-        this.packetNumber = (int) wrapped.getShort();
-        //System.out.println(this.packetNumber);
+        byte[] data = p.getData();
+        this.status = data[0];
+        this.FileID = data[1];
+        byte[] packetnumberdata = {data[2], data[3]};
+        ByteBuffer packetnumber = ByteBuffer.wrap(packetnumberdata);
+        this.packetNumber = (int) packetnumber.getShort();
         for(int i = 4; i < p.getLength(); i++){
-            this.data.add(s[i]);
+            this.data.add(data[i]);
         }
     }
 
@@ -32,11 +30,11 @@ public class UDPPacket implements Comparable<UDPPacket> {
     public byte getStatusByte(){ return this.status;}
 
     public byte[] getData(){
-        byte[] b = new byte[this.data.size()];
-        for(int i = 0; i < data.size(); i++){
-            b[i] = this.data.get(i);
+        byte[] data = new byte[this.data.size()];
+        for(int i = 0; i < this.data.size(); i++){
+            data[i] = this.data.get(i);
         }
-        return b;
+        return data;
     }
 
     public int compareTo(UDPPacket p) { return this.getPacketNumber() - p.getPacketNumber(); }

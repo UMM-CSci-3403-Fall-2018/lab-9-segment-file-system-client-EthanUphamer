@@ -22,7 +22,6 @@ public class UDPFile {
 
     public void addHeaderToFile(UDPHeader header) {
       this.header = header;
-      //System.out.println(this.header.getFileName());
       if(this.length == this.packets.size()){
           this.finished = true;
           Collections.sort(this.packets);
@@ -33,7 +32,6 @@ public class UDPFile {
       this.packets.add(packet);
       if(isFinalPacket(packet)) {
           this.length = packet.getPacketNumber() + 1;
-          //System.out.println(this.length);
       }
       if(this.header != null && this.length == this.packets.size()){
           this.finished = true;
@@ -56,15 +54,5 @@ public class UDPFile {
             return true;
         }
         return false;
-    }
-
-    public boolean exists() {
-      if(packets.size() >= 0) {
-        return true;
-      }
-      if(header != null) {
-        return true;
-      }
-      return false;
     }
 }

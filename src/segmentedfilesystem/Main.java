@@ -17,36 +17,27 @@ public class Main {
         SocketAddress s = new InetSocketAddress(heartofgold, PORT_NUMBER);
         DatagramSocket socket = new DatagramSocket();
         socket.connect(s);
-        UDPFile[] files = new UDPFile[3];
         byte[] buf = new byte[1028];
-        DatagramPacket p = new DatagramPacket(buf, 1028);
-        socket.send(p);
-        int packetCount = 0;
+        DatagramPacket packet = new DatagramPacket(buf, 1028);
+        socket.send(packet);
         while(completionStatus(this.files)) {
-          socket.receive(p);
-          //packetCount++;
-          //System.out.println("Packets recieved: " + packetCount);
-          //System.out.println("Packets recieved: " + packetCount);
-          if(isHeader(p)) {
-            addHeaderToFile(p);
+          socket.receive(packet);
+          if(isHeader(packet)) {
+            addHeaderToFile(packet);
           } else {
-            addPacketToFile(p);
+            addPacketToFile(packet);
           }
         }
-        File file = new File(this.files[0].retrieveHeader().getFileName());
-        file.createNewFile();
-        File file1 = new File(this.files[1].retrieveHeader().getFileName());
-        file1.createNewFile();
-        File file2 = new File(this.files[2].retrieveHeader().getFileName());
-        file2.createNewFile();
-
-        //System.out.println("We actually left the while loop");
+        for(int i = 0; i < 3; i++) {
+            File file = new File(this.files[i].retrieveHeader().getFileName());
+            file.createNewFile();
+        }
         for(int j = 0; j < 3; j++) {
-            FileOutputStream fos = new FileOutputStream(this.files[j].retrieveHeader().getFileName());
+            FileOutputStream fileoutput = new FileOutputStream(this.files[j].retrieveHeader().getFileName());
             for (int i = 0; i < this.files[j].retrievePackets().size(); i++) {
-                fos.write(this.files[j].retrievePackets().get(i).getData());
+                fileoutput.write(this.files[j].retrievePackets().get(i).getData());
             }
-            fos.close();
+            fileoutput.close();
         }
 
     }
@@ -86,19 +77,14 @@ public class Main {
     }
 
     private boolean completionStatus(UDPFile[] arr){
-        boolean b = true;
+        boolean status = true;
         for(int i = 0; i < 3; i++){
          if(arr[i] != null && arr[i].sendStatus()){
-             b = false;
+             status = false;
          } else {
-             b =true;
+             return true;
          }
         }
-        return b;
+        return status;
     }
-
-    //private boolean checkLength(UDPFile[] arr){
-        //if(UDPFile)
-    //}
-
 }

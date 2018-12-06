@@ -8,15 +8,14 @@ public class UDPHeader {
     private String filename;
 
     public UDPHeader(DatagramPacket p){
-        byte[] s = p.getData().clone();
-        int plength = p.getLength();
-        this.FileID = s[1];
-        byte[] b = new byte[plength-2];
-        for(int i = 2; i < plength; i++){
-            b[i-2] = s[i];
+        byte[] data = p.getData().clone();
+        int packetlength = p.getLength();
+        this.FileID = data[1];
+        byte[] filename = new byte[packetlength-2];
+        for(int i = 2; i < packetlength; i++){
+            filename[i-2] = data[i];
         }
-        this.filename = new String(b);
-        //System.out.println(filename);
+        this.filename = new String(filename);
     }
 
     public byte getFileID() {
