@@ -22,21 +22,27 @@ public class UDPFile {
 
     public void addHeaderToFile(UDPHeader header) {
       this.header = header;
-      if(length == this.packets.size()){
+      if(this.length == this.packets.size()){
           this.finished = true;
+          Collections.sort(this.packets);
       }
     }
 
     public void addPacketToFile(UDPPacket packet) {
       this.packets.add(packet);
       if(isFinalPacket(packet)) {
-          this.length = packet.getPacketNumber();
+          this.length = packet.getPacketNumber() + 1;
+          System.out.println(this.length);
       }
       if(this.header != null && this.length == this.packets.size()){
           this.finished = true;
           Collections.sort(this.packets);
       }
     }
+
+    public ArrayList<UDPPacket> retrievePackets(){return this.packets;}
+
+    public UDPHeader retrieveHeader(){return this.header;}
 
     public byte getFileID(){
       return this.FileID;

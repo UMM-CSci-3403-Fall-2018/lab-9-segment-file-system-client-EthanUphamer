@@ -31,6 +31,14 @@ public class UDPPacket implements Comparable<UDPPacket> {
 
     public byte getStatusByte(){ return this.status;}
 
+    public byte[] getData(){
+        byte[] b = new byte[this.data.size()];
+        for(int i = 0; i < data.size(); i++){
+            b[i] = this.data.get(i);
+        }
+        return b;
+    }
+
     public int compareTo(UDPPacket p) { return this.getPacketNumber() - p.getPacketNumber(); }
 
     public int getPacketNumber() { return this.packetNumber;}

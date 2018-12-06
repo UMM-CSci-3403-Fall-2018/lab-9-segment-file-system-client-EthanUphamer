@@ -24,15 +24,25 @@ public class Main {
         int packetCount = 0;
         while(completionStatus(this.files)) {
           socket.receive(p);
-          packetCount++;
-          System.out.println("Packets recieved: " + packetCount);
+          //packetCount++;
+          //System.out.println("Packets recieved: " + packetCount);
           if(isHeader(p)) {
             addHeaderToFile(p);
           } else {
             addPacketToFile(p);
           }
         }
+        //System.out.println(files[1].retrieveHeader().getFileName());
+        File file = new File("hello");
+        file.createNewFile();
+
         System.out.println("We actually left the while loop");
+        /*FileOutputStream fos = new FileOutputStream(files[0].retrieveHeader().getFileName());
+            for(int i = 0; i < files[0].retrievePackets().size(); i++) {
+                fos.write(files[0].retrievePackets().get(i).getData());
+            }
+            fos.close();*/
+
 
     }
 
@@ -75,6 +85,8 @@ public class Main {
         for(int i = 0; i < 3; i++){
          if(arr[i] != null && arr[i].sendStatus()){
              b = false;
+         } else {
+             b =true;
          }
         }
         return b;
