@@ -26,23 +26,28 @@ public class Main {
           socket.receive(p);
           //packetCount++;
           //System.out.println("Packets recieved: " + packetCount);
+          //System.out.println("Packets recieved: " + packetCount);
           if(isHeader(p)) {
             addHeaderToFile(p);
           } else {
             addPacketToFile(p);
           }
         }
-        //System.out.println(files[1].retrieveHeader().getFileName());
-        File file = new File("hello");
+        File file = new File(this.files[0].retrieveHeader().getFileName());
         file.createNewFile();
+        File file1 = new File(this.files[1].retrieveHeader().getFileName());
+        file1.createNewFile();
+        File file2 = new File(this.files[2].retrieveHeader().getFileName());
+        file2.createNewFile();
 
-        System.out.println("We actually left the while loop");
-        /*FileOutputStream fos = new FileOutputStream(files[0].retrieveHeader().getFileName());
-            for(int i = 0; i < files[0].retrievePackets().size(); i++) {
-                fos.write(files[0].retrievePackets().get(i).getData());
+        //System.out.println("We actually left the while loop");
+        for(int j = 0; j < 3; j++) {
+            FileOutputStream fos = new FileOutputStream(this.files[j].retrieveHeader().getFileName());
+            for (int i = 0; i < this.files[j].retrievePackets().size(); i++) {
+                fos.write(this.files[j].retrievePackets().get(i).getData());
             }
-            fos.close();*/
-
+            fos.close();
+        }
 
     }
 
